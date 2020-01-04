@@ -34,8 +34,8 @@ df["Destination"] = le.fit_transform(df["Destination"])
     
 # removing duration outliear
 #print((df["Duration"]<=0).value_counts())
-df.drop(df[df["Duration"]<=0].index, inplace = True)
-df.drop(df[df["Duration"]>=4000].index, inplace = True)
+#df.drop(df[df["Duration"]<=0].index, inplace = True)
+#df.drop(df[df["Duration"]>=4000].index, inplace = True)
 # end
 
 X = df.drop(["Claim"],1)
