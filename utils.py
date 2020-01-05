@@ -67,5 +67,3 @@ def setModel(_model):
     return _myModel_cv
 
 
-    
-    
