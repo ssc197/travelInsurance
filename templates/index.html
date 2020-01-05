@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+  
+</head>
+
+<body>
+ <div class="model row">
+   <div class="align col-12">
+    <h1>Will they claim </h1>
+   </div>
+	
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post" class=" align col-12">
+      <div class="row model-container">
+        <div class="form-check col-6">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="selectedmodel"   id="dtc_simple" value="dtc_simple">DTC Simple with GridSearchCV
+          </label>
+        </div>
+
+        <div class="form-check col-6">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="selectedmodel"   id="rf_simple" value="rf_simple">RF Simple with GridSearchCV
+          </label>
+        </div>
+
+        <div class="form-check col-6">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="selectedmodel"   id="log_cls" value="log_cls">Logistic Simple with GridSearchCV
+          </label>
+        </div>
+
+        <div class="submit col-12">
+          <button type="submit" class="btn btn-primary btn-block btn-large" onclick="getVal()">Predict</button>
+        </div>
+  
+      </div>
+
+
+      
+  
+        
+    </form>
+
+   <div class="row">
+     <div class="accuracy-txt col-12 align">
+        {{ prediction_text }}
+     </div>
+     <div class="model-txt col-12 align">
+        <p>
+          {{ model_text }}
+        </p>
+       
+     </div>
+
+     <div class="model-txt col-12 align">
+    <table class="table table-bordered">
+      <th>
+        <td>Precision</td>
+        <td>Recall</td>
+        <td>F1-Score</td>
+      </th>
+      <tbody>
+        <tr>
+          <td>0</td><td>{{zero_prec}}</td><td>{{zero_rec}}</td><td>{{zero_fscore}}</td>
+        </tr>
+        <tr>
+          <td>1</td><td>{{one_prec}}</td><td>{{one_rec}}</td><td>{{one_fscore}}</td>
+        </tr>
+      </tbody>
+    </table>
+     
+   </div>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+<script>
+window.onload = function() {
+  checkCookie();
+};
+
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var model=getCookie("modelName");
+  if (model != "") {
+    var radiobtn = document.getElementById(model);
+    radiobtn.checked = true;
+
+  } 
+}
+
+function getVal() {
+            var ele = document.getElementsByName('selectedmodel'); 
+            var cookie;
+            for(i = 0; i < ele.length; i++) { 
+                if(ele[i].checked) 
+                cookie = ele[i].id; 
+            }
+            document.cookie = "modelName="+cookie;         } 
+
+</script>
